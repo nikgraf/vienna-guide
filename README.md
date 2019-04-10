@@ -1,4 +1,6 @@
-# app
+# City Guide
+
+![city-guide-small](https://user-images.githubusercontent.com/223045/55906469-a3c06480-5bd4-11e9-98b8-86b022a2524d.png)
 
 ## Run Project
 
