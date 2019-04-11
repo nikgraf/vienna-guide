@@ -9,6 +9,15 @@ type coordinates = {
   lng: float,
 };
 
+type placeType =
+  | Museum
+  | Cafe;
+
+type visibilityFilter =
+  | Museum
+  | Cafe
+  | All;
+
 type place = {
   id: string,
   name: string,
@@ -18,6 +27,7 @@ type place = {
   email: option(string),
   address: string,
   coordinates,
+  placeType,
 };
 
 let places = [
@@ -37,6 +47,7 @@ let places = [
       lat: 48.186272,
       lng: 16.309719,
     },
+    placeType: Museum,
   },
   {
     id: "675a1180-62cc-4518-b272-a0e1beeaf868",
@@ -54,6 +65,7 @@ let places = [
       lat: 48.199153,
       lng: 16.351044,
     },
+    placeType: Cafe,
   },
   {
     id: "873da18c-4eb4-4cd1-8edf-d0bcc5776127",
@@ -71,5 +83,28 @@ let places = [
       lat: 48.204062,
       lng: 16.368852,
     },
+    placeType: Museum,
   },
 ];
+
+// Helpers
+
+let getNamesFromPlaces = place => place.name;
+let getPlacesNames = places->Belt.List.map(getNamesFromPlaces)->Array.of_list;
+let searchPlacesByTerm = (places, term) =>
+  Belt.List.keep(places, place =>
+    Js.String.includes(
+      Js.String.toLowerCase(term),
+      Js.String.toLowerCase(place.name),
+    )
+  );
+let searchPlacesByCategory = (places, category) => {
+  let result =
+    switch (category) {
+    | Museum => Belt.List.keep(places, place => place.placeType === Museum)
+    | Cafe => Belt.List.keep(places, place => place.placeType === Cafe)
+    | All => places
+    };
+
+  result;
+};
